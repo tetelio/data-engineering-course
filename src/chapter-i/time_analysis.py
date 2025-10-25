@@ -61,5 +61,5 @@ plt.legend()
 plt.grid()
 
 # We save the plot as png for posterior inspection
-plt.savefig(time_analysis_time_file_path.with_suffix('.png'), dpi=300, bbox_inches='tight')
+plt.savefig(time_analysis_time_file_path.with_suffix('.png'), dpi=150, bbox_inches='tight')
 
