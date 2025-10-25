@@ -70,8 +70,9 @@ for i, url in enumerate(urls):
     times[i]['download']['start'] = time.time() - start_time
     response = requests.get(url)
 
-    format = response.headers['Content-Type'].split('/')[-1]
-    file_name = f"{url.split('.mp4')[-1]}.{format}"
+    format = url.split('.')[-1]
+    stem = url.split('/')[-1].split('.')[-2]
+    file_name = f"{stem}.{format}"
     file_path = assets_path / file_name
 
     with open(file_path, 'wb') as f:
