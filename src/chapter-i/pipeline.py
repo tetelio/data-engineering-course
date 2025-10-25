@@ -32,15 +32,15 @@ encrypted_assets_path.mkdir(exist_ok=True)
 
 # This is the list of urls that contain the videos that we want to encrypt
 urls = [
-    'https://www.pexels.com/download/video/34406122/',
-    'https://www.pexels.com/download/video/5159092/',
-    'https://www.pexels.com/download/video/5157341/',
-    'https://www.pexels.com/download/video/6139586/',
-    'https://www.pexels.com/download/video/8928255/',
-    'https://www.pexels.com/download/video/4769542/',
-    'https://www.pexels.com/download/video/3255275/',
-    'https://www.pexels.com/download/video/3196061/',
-    'https://www.pexels.com/download/video/4778723/'
+    'https://github.com/tetelio/data-engineering-course/releases/download/v0.1.0/34406122.mp4',
+    'https://github.com/tetelio/data-engineering-course/releases/download/v0.1.0/5159092.mp4',
+    'https://github.com/tetelio/data-engineering-course/releases/download/v0.1.0/5157341.mp4',
+    'https://github.com/tetelio/data-engineering-course/releases/download/v0.1.0/6139586.mp4',
+    'https://github.com/tetelio/data-engineering-course/releases/download/v0.1.0/8928255.mp4',
+    'https://github.com/tetelio/data-engineering-course/releases/download/v0.1.0/4769542.mp4',
+    'https://github.com/tetelio/data-engineering-course/releases/download/v0.1.0/3255275.mp4',
+    'https://github.com/tetelio/data-engineering-course/releases/download/v0.1.0/3196061.mp4',
+    'https://github.com/tetelio/data-engineering-course/releases/download/v0.1.0/4778723.mp4'
 ]
 
 # We read the key string from the .env file that we will use to encrypt the files
@@ -71,7 +71,7 @@ for i, url in enumerate(urls):
     response = requests.get(url)
 
     format = response.headers['Content-Type'].split('/')[-1]
-    file_name = f"{url.split('/')[-2]}.{format}"
+    file_name = f"{url.split('.mp4')[-1]}.{format}"
     file_path = assets_path / file_name
 
     with open(file_path, 'wb') as f:
