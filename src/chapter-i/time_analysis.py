@@ -3,7 +3,7 @@ import json
 import matplotlib.pyplot as plt
 from pathlib import Path
 
-# We read the json file with the time data
+# Read the json file with the time data
 time_analysis_path = Path('time_analysis')
 time_file_name = 'chapter-i.json'
 time_analysis_time_file_path = time_analysis_path / time_file_name
@@ -18,7 +18,7 @@ time_analysis_system_file_path = time_analysis_path / system_file_name
 with open(time_analysis_system_file_path, 'r') as f:
     system_data = json.loads(f.read())
 
-# We will color-code each step differently
+# Create dictionary for each step's legend data in the plot
 steps_data = {
     'download': {
         'color': '#1f77b4',
@@ -40,7 +40,7 @@ steps_data = {
 plt.figure()
 used_labels = set()
 
-# We plot the data: x axis is for time in seconds (continuous), y for each file (discrete)
+# Plot the data: x axis is for time in seconds (continuous), y for each file (discrete)
 for file_id, file_data in time_data.items():
     for step, step_data in steps_data.items():
         label = step_data['label'] if step not in used_labels else None
@@ -60,6 +60,6 @@ plt.yticks(np.arange(0, plt.ylim()[1] + 1, 1))
 plt.legend()
 plt.grid()
 
-# We save the plot as png for posterior inspection
+# Save the plot as png for posterior inspection
 plt.savefig(time_analysis_time_file_path.with_suffix('.png'), dpi=150, bbox_inches='tight')
 
