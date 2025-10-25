@@ -2,6 +2,8 @@ import requests
 import boto3
 import time
 import json
+import multiprocessing
+import speedtest
 from pathlib import Path
 from dotenv import dotenv_values
 
@@ -130,4 +132,29 @@ with open(time_analysis_file_path, 'w') as f:
 
 total_time = end_time - start_time
 print(f"\nTotal time is {int(total_time)}s")
+
+# Check number of cores for performance tuning analysis
+cpu_count = multiprocessing.cpu_count()
+
+# Check internet speed test for performance tuning too
+st = speedtest.Speedtest()
+
+st.get_best_server()
+download_speed = st.download()
+upload_speed = st.upload()
+
+download_mbytesps = download_speed / (1_000_000 * 8)
+upload_mbytesps = upload_speed / (1_000_000 * 8)
+
+performance_data = {
+    'cpu_count': cpu_count,
+    'download_MB/s': download_mbytesps,
+    'upload_MB/s': upload_mbytesps
+}
+
+# Write down the time data into a json file for posterior analysis
+time_analysis_performance_file_path = time_analysis_path / 'chapter-i-performance.json'
+
+with open(time_analysis_performance_file_path, 'w') as f:
+    f.write(json.dumps(performance_data, indent=2))
 

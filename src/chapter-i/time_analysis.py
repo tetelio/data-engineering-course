@@ -5,25 +5,35 @@ from pathlib import Path
 
 # We read the json file with the time data
 time_analysis_path = Path('time_analysis')
-file_name = 'chapter-i.json'
-time_analysis_data_file_path = time_analysis_path / file_name
+time_file_name = 'chapter-i.json'
+time_analysis_time_file_path = time_analysis_path / time_file_name
 
-with open(time_analysis_data_file_path, 'r') as f:
-    data = json.loads(f.read())
+with open(time_analysis_time_file_path, 'r') as f:
+    time_data = json.loads(f.read())
+
+# Read the json file with the system data
+system_file_name = 'chapter-i-system.json'
+time_analysis_system_file_path = time_analysis_path / system_file_name
+
+with open(time_analysis_system_file_path, 'r') as f:
+    system_data = json.loads(f.read())
 
 # We will color-code each step differently
 steps_data = {
     'download': {
         'color': '#1f77b4',
-        'y_offset': -0.1
+        'y_offset': -0.1,
+        'label': f"download ({system_data['download_MB/s']:.2f} MB/s)"
     },
     'encrypt':  {
         'color': '#ff7f0e',
-        'y_offset': 0.0
+        'y_offset': 0.0,
+        'label': f"encrypt ({system_data['cpu_count']} cores)"
     },
     'upload':{
         'color': '#7f7f7f',
-        'y_offset': 0.1
+        'y_offset': 0.1,
+        'label': f"upload ({system_data['upload_MB/s']:.2f} MB/s)"
     },
 }
 
@@ -31,9 +41,9 @@ plt.figure()
 used_labels = set()
 
 # We plot the data: x axis is for time in seconds (continuous), y for each file (discrete)
-for file_id, file_data in data.items():
+for file_id, file_data in time_data.items():
     for step, step_data in steps_data.items():
-        label = step if step not in used_labels else None
+        label = step_data['label'] if step not in used_labels else None
         y_value = int(file_id) + step_data['y_offset']
         plt.plot(
             [file_data[step]['start'], file_data[step]['end']],
@@ -51,5 +61,5 @@ plt.legend()
 plt.grid()
 
 # We save the plot as png for posterior inspection
-plt.savefig(time_analysis_data_file_path.with_suffix('.png'), dpi=300, bbox_inches='tight')
+plt.savefig(time_analysis_time_file_path.with_suffix('.png'), dpi=300, bbox_inches='tight')
 
